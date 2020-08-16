@@ -1,4 +1,4 @@
-def dk_data_import(week, player_target_file, toggle):
+def dk_data_import(year, week, player_target_file, toggle):
     'Toggle = 1 if reading in Draft Kings Data'
     'Toggle = 2 if reading in Target Players Data'
     
@@ -7,7 +7,7 @@ def dk_data_import(week, player_target_file, toggle):
     "Import in Draft Kings Salary"
     if toggle == 1:  
         "Import Draft Kings Salary Input File"
-        dk_data = pd.read_csv(week + '/DKSalaries_' + week + '.csv')
+        dk_data = pd.read_csv(year + '/' + week + '/DKSalaries_' + week + '.csv')
         dk_df = pd.DataFrame(data = dk_data)
         
         "Rename Columns to match Fantasy Pros for Data Merging"

@@ -1,4 +1,4 @@
-def dk_optimizer_ownership_studlock(week, player_target_file):
+def dk_optimizer_ownership_studlock(year, week, player_target_file):
     import pandas as pd
     from Select_10_Lineups import select_ten_lineups
     from Create_All_Lineups import create_all_lineups
@@ -11,7 +11,7 @@ def dk_optimizer_ownership_studlock(week, player_target_file):
     value = 28
 
     "Import In Big Matrix Data from Big Matrix Generator"
-    big_matrix_data = pd.read_csv(week + '\BigMatrix_' + week + '.csv')
+    big_matrix_data = pd.read_csv(year + '/' + week + '\BigMatrix_' + week + '.csv')
     big_matrix = pd.DataFrame(data=big_matrix_data)
 
     qb_df_small = big_matrix[big_matrix['Position'] == 'QB']
@@ -21,7 +21,7 @@ def dk_optimizer_ownership_studlock(week, player_target_file):
     dst_df_small = big_matrix[big_matrix['Position'] == 'DST']
 
     "Import Player Target CSV Input"
-    player_target = dk_data_import(week, player_target_file, 2)
+    player_target = dk_data_import(year, week, player_target_file, 2)
     
     "Drop all but targeted players from matrix of players"
     qb_df_small = qb_df_small[qb_df_small['Player'].isin(player_target['Player'])]
@@ -58,8 +58,8 @@ def dk_optimizer_ownership_studlock(week, player_target_file):
     all_lineups.sort_values(by=['Points'], inplace=True, ascending=False)
     all_lineups = all_lineups.drop_duplicates(inplace=False)
     all_lineups = all_lineups.reset_index(drop=True)
-    all_lineups.to_csv(week + '\All_Lineups_OwnershipStud_' + week + '.csv')
+    all_lineups.to_csv(year + '/' + week + '\All_Lineups_OwnershipStud_' + week + '.csv')
 
     "Select 10 Lineups"
-    dk_lineups_upload = select_ten_lineups(week, all_lineups, value)
-    dk_lineups_upload.to_csv(week + '\Ten_Lineup_Upload_File_OwnershipStud_' + week + '.csv', index=False)
+    dk_lineups_upload = select_ten_lineups(year, week, all_lineups, value)
+    dk_lineups_upload.to_csv(year + '/' + week + '\Ten_Lineup_Upload_File_OwnershipStud_' + week + '.csv', index=False)

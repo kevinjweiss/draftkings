@@ -1,4 +1,4 @@
-def select_ten_lineups(week, all_lineups, value):
+def select_ten_lineups(year, week, all_lineups, value):
     import pandas as pd
     import numpy as np
     from DK_Data_Import import dk_data_import
@@ -17,7 +17,7 @@ def select_ten_lineups(week, all_lineups, value):
     dk_lineups_upload = pd.DataFrame(np.random.randint(low=0, high=10, size=(10,9)),columns=['QB', 'RB1', 'RB2', 'WR1', 'WR2', 'WR3', 'TE', 'Flex', 'DST'])
 
     "Import in Draft Kings Data"
-    dk_df = dk_data_import(week, week + '/Ownership_' + week + '_Guess.csv', 1)
+    dk_df = dk_data_import(year, week, week + '/Ownership_' + week + '_Guess.csv', 1)
 
     for i in range (0,10):
         dk_lineups_upload.loc[i,'QB'] = dk_df.loc[dk_df[dk_df['Player'] == opt_lineup.loc[i, 'QB']].index.values[0], 'Name + ID']

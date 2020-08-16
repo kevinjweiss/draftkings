@@ -1,4 +1,4 @@
-def post_game_analysis(results, lineups, week):
+def post_game_analysis(year, results, lineups, week):
 
     import pandas as pd
     import seaborn as sns
@@ -6,7 +6,7 @@ def post_game_analysis(results, lineups, week):
     from DK_Data_Import import dk_data_import
     
     'Read in Result and Lineup Files'
-    result_data = dk_data_import(week, results, 2)
+    result_data = dk_data_import(year, week, results, 2)
     all_lineups = pd.read_csv(lineups)
 
     'Initialize Point Vectors'
@@ -53,7 +53,7 @@ def post_game_analysis(results, lineups, week):
         if python_lineup_points[i] > point_thresh:
             counter = counter + 1
 
-    all_lineups.to_csv(week + '/All_Lineups_' + week + '_Processed.csv')
+    all_lineups.to_csv(year + '/' + week + '/All_Lineups_' + week + '_Processed.csv')
     
     print(counter*100/len(python_lineup_points))
 
