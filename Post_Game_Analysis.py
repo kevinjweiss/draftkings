@@ -55,10 +55,12 @@ def post_game_analysis(year, results, lineups, week):
 
     all_lineups.to_csv(year + '/' + week + '/All_Lineups_' + week + '_Processed.csv')
     
-    print(counter*100/len(python_lineup_points))
+    win_percent = counter*100/len(python_lineup_points)
+    profit = win_percent - 50
 
     plt.figure(1)
     sns.distplot(python_lineup_points)
     sns.distplot(dk_competitor_points)
     plt.show()
 
+    return profit

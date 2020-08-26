@@ -143,13 +143,32 @@ def big_matrix_generator(year, week):
     dst_dk_value = dst_df['Salary']/dst_df['DK_Points']
     dst_df = dst_df.assign(DK_Value = dst_dk_value)
 
-    "Shorten Dataframes to useful columns"
-    qb_df_small = qb_df[['Player', 'Position', 'Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Value']).reset_index(drop=True)
-    rb_df_small = rb_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Value']).reset_index(drop=True)
-    wr_df_small = wr_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Value']).reset_index(drop=True)
-    te_df_small = te_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Value']).reset_index(drop=True)
-    dst_df_small = dst_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Value']).reset_index(drop=True)
-
+    "Shorten Dataframes to useful columns and rank"
+    qb_df_small = qb_df[['Player', 'Position', 'Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Points'], ascending=False).reset_index(drop=True)
+    qb_df_small['Points Rank'] = qb_df_small.index + 1
+    qb_df_small = qb_df_small.sort_values(by=['DK_Value']).reset_index(drop=True)
+    qb_df_small['Value Rank'] = qb_df_small.index + 1
+    
+    rb_df_small = rb_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Points'], ascending=False).reset_index(drop=True)
+    rb_df_small['Points Rank'] = rb_df_small.index + 1
+    rb_df_small = rb_df_small.sort_values(by=['DK_Value']).reset_index(drop=True)
+    rb_df_small['Value Rank'] = rb_df_small.index + 1
+    
+    wr_df_small = wr_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Points'], ascending=False).reset_index(drop=True)
+    wr_df_small['Points Rank'] = wr_df_small.index + 1
+    wr_df_small = wr_df_small.sort_values(by=['DK_Value']).reset_index(drop=True)
+    wr_df_small['Value Rank'] = wr_df_small.index + 1
+    
+    te_df_small = te_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Points'], ascending=False).reset_index(drop=True)
+    te_df_small['Points Rank'] = te_df_small.index + 1
+    te_df_small = te_df_small.sort_values(by=['DK_Value']).reset_index(drop=True)
+    te_df_small['Value Rank'] = te_df_small.index + 1
+    
+    dst_df_small = dst_df[['Player', 'Position','Salary', 'DK_Points', 'DK_Value']].sort_values(by=['DK_Points'], ascending=False).reset_index(drop=True)
+    dst_df_small['Points Rank'] = dst_df_small.index + 1
+    dst_df_small = dst_df_small.sort_values(by=['DK_Value']).reset_index(drop=True)
+    dst_df_small['Value Rank'] = dst_df_small.index + 1
+    
     "Merge Data Frames into big matrix for output"
     merge = [qb_df_small, rb_df_small, wr_df_small, te_df_small, dst_df_small]
     big_matrix = pd.concat(merge)
@@ -168,6 +187,6 @@ def big_matrix_generator(year, week):
     excluded_df.to_csv(year + '/' + week + '\Excluded_Players_' + week + '.csv')
 
     "Write to CSV and eliminate low scoring players"
-    big_matrix = big_matrix.drop(big_matrix[big_matrix.DK_Points < 5].index)
+    big_matrix = big_matrix.drop(big_matrix[big_matrix.DK_Points < 1].index)
     big_matrix = big_matrix.reset_index(drop=True)
     big_matrix.to_csv(year + '/' + week + '\BigMatrix_' + week + '.csv')
