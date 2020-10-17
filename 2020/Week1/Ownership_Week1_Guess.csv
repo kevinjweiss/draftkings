@@ -1,25 +1,21 @@
-Player
-Ryan Fitzpatrick
-Philip Rivers
-Matt Ryan
-Lamar Jackson
-Joe Mixon
-Melvin Gordon
-Austin Ekeler
-Patrick Laird
-Adrian Peterson
-Chris Carson
-Christian McCaffrey
-Julio Jones
-Michael Thomas
-Keenan Allen
-Mike Williams
-Courtland Sutton
-Jamison Crowder
-Tyler Boyd
-Devante Parker
-Terry McLaurin
-Austin Hooper
-Washington Redskins
-Jacksonville Jaguars
-Noah Fant
+Player,Position
+Matt Ryan,QB
+Austin Ekeler,RB
+Josh Jacobs,RB
+Alvin Kamara,RB
+Boston Scott,RB
+Joe Mixon,RB
+Christian McCaffrey,RB
+Davante Adams,WR
+Julio Jones,WR
+Michael Thomas,WR
+T.Y. Hilton,WR
+Terry McLaurin,WR
+Marvin Jones,WR
+Calvin Ridley,WR
+DeSean Jackson,WR
+Allen Robinson,WR
+Chris Godwin,WR
+Jack Doyle,TE
+Zach Ertz,TE
+New York Jets,DST

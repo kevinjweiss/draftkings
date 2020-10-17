@@ -1,0 +1,25 @@
+,Player,Team,Position,Salary,Name + ID,Draft Kings_MIN,Draft Kings_MID,Draft Kings_MAX
+1,Patrick Mahomes,KC,QB,7700,Patrick Mahomes (15560218),21.867,28.162,32.81
+0,Mike Davis,CAR,RB,6400,Mike Davis (15560300),10.48,18.76,25.8
+1,Ezekiel Elliott,DAL,RB,7800,Ezekiel Elliott (15560282),16.66,22.8,29.26
+2,David Johnson,HOU,RB,5200,David Johnson (15560324),10.38,15.1,21.4
+3,Josh Jacobs,LV,RB,6300,Josh Jacobs (15560304),12.07,18.11,26.41
+5,Clyde Edwards-Helaire,KC,RB,6800,Clyde Edwards-Helaire (15560288),13.5,19.2,23.675
+6,Kareem Hunt,CLE,RB,6500,Kareem Hunt (15560296),9.58,17.64,26.39
+7,Todd Gurley,ATL,RB,5700,Todd Gurley II (15560314),10,15.21,20.79
+8,Miles Sanders,PHI,RB,6500,Miles Sanders (15560292),11.85,17.34,24.85
+9,Antonio Gibson,WAS,RB,5000,Antonio Gibson (15560328),8.8,13.19,18.03
+0,Olamide Zaccheaus,ATL,WR,3000,Olamide Zaccheaus (15560814),6.41,9.23,13.7
+1,Darius Slayton,NYG,WR,4800,Darius Slayton (15560586),10.97,13.62,18.7
+2,Robby Anderson,CAR,WR,5900,Robby Anderson (15560546),14.23,16.61,21.025
+3,Terry McLaurin,WAS,WR,6100,Terry McLaurin (15560538),14.1,16.875,21.85
+4,DeAndre Hopkins,ARI,WR,7900,DeAndre Hopkins (15560510),18.05,21.475,27.15
+5,DJ Moore,CAR,WR,6000,DJ Moore (15560542),13.12,15.99,23.65
+6,Sammy Watkins,KC,WR,4500,Sammy Watkins (15560610),8.21,11.8,14.37
+7,DeVante Parker,MIA,WR,5900,DeVante Parker (15560544),11.92,15.45,19.75
+8,Amari Cooper,DAL,WR,7400,Amari Cooper (15560514),15.25,19.375,27.2
+9,Hunter Renfrow,LV,WR,4900,Hunter Renfrow (15560578),8.73,12.66,17.4
+0,Darren Waller,LV,TE,5900,Darren Waller (15560854),11.84,16.58,27.25
+1,Travis Kelce,KC,TE,6400,Travis Kelce (15560850),14.2,17.12,22.75
+2,George Kittle,SF,TE,6600,George Kittle (15560848),13.8,17.33,27.1
+0,Cowboys,TEN,DST,2100,Titans  (15561062),5.071428571,5.671428571,6.471428571

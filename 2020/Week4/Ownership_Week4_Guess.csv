@@ -1,0 +1,18 @@
+,Player,Team,Position,Salary,Name + ID,Draft Kings_MIN,Draft Kings_MID,Draft Kings_MAX
+0,Ryan Fitzpatrick,MIA,QB,5400,Ryan Fitzpatrick (15512448),15.32,22.032,28.3
+2,Dak Prescott,DAL,QB,7200,Dak Prescott (15512429),18.871,26.506,31.9
+0,Ronald Jones,TB,RB,4700,Ronald Jones II (15512555),10.58,14.84,19.19
+1,Alvin Kamara,NO,RB,8000,Alvin Kamara (15512493),17.31,24.92,31.4
+2,Mike Davis,CAR,RB,5700,Mike Davis (15512527),11.76,17.2,25.37
+3,Ezekiel Elliott,DAL,RB,7800,Ezekiel Elliott (15512495),16.55,22.85,30.2
+0,Tyler Lockett,SEA,WR,7000,Tyler Lockett (15512743),16.1,19.9,27.5
+1,DJ Moore,CAR,WR,5600,DJ Moore (15512789),12.8,15.81,23.075
+2,DeVante Parker,MIA,WR,5700,DeVante Parker (15512785),12.96,15.85,21
+3,Brandin Cooks,HOU,WR,4500,Brandin Cooks (15512837),8.12,12.31,19.07
+4,Amari Cooper,DAL,WR,6700,Amari Cooper (15512755),14.12,18.3,27.1
+5,Keenan Allen,LAC,WR,6500,Keenan Allen (15512761),15.66,17.55,27.5
+6,Kenny Golladay,DET,WR,6000,Kenny Golladay (15512777),12.4,15.91,23.75
+0,Darren Waller,LV,TE,5200,Darren Waller (15513101),10.97,15.4,23.85
+1,Hunter Henry,LAC,TE,4600,Hunter Henry (15513109),10.64,12.88,20
+0,Buccaneers,TB,DST,3400,Buccaneers  (15513311),7.071428571,7.642857143,8.871428571
+1,Texans,HOU,DST,2500,Texans  (15513326),4.5,5.357142857,7.385714286
