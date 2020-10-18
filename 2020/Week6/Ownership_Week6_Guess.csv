@@ -1,0 +1,18 @@
+,Player,Team,Position,Salary,Name + ID,Draft Kings_MIN,Draft Kings_MID,Draft Kings_MAX
+0,Ryan Fitzpatrick,MIA,QB,5900,Ryan Fitzpatrick (15607545),16.792,21.419,25.773
+1,Matthew Stafford,DET,QB,6300,Matthew Stafford (15607542),17.818,22.63,26.77
+0,Derrick Henry,TEN,RB,7300,Derrick Henry (15607597),19.285,22.93,25.17
+1,Mike Davis,CAR,RB,7000,Mike Davis (15607603),14.6,20.29,26.74
+2,Antonio Gibson,WAS,RB,5500,Antonio Gibson (15607625),11.23,15.4,19.47
+3,Alexander Mattison,MIN,RB,7200,Alexander Mattison (15607599),9.28,20.15,30.22
+4,Devonta Freeman,NYG,RB,4900,Devonta Freeman (15607639),9.03,13.63,19.67
+0,Terry McLaurin,WAS,WR,5700,Terry McLaurin (15607841),12.22,16.27,21.725
+1,Davante Adams,GB,WR,8000,Davante Adams (15607803),19.225,22.8,27.2
+2,Kenny Golladay,DET,WR,6200,Kenny Golladay (15607831),13.77,17.51,26
+4,Adam Thielen,MIN,WR,7300,Adam Thielen (15607807),16.18,20.2,25.125
+5,Jeff Smith,NYJ,WR,3000,Jeff Smith (15608077),5.06,8.15,12.34
+6,Tyler Boyd,CIN,WR,5800,Tyler Boyd (15607839),12.24,15.73,22.2
+0,Eric Ebron,PIT,TE,4100,Eric Ebron (15608131),7.42,10.55,13.94
+1,Jonnu Smith,TEN,TE,5200,Jonnu Smith (15608115),10.37,13.28,16.3
+0,Dolphins,MIA,DST,2900,Dolphins  (15608293),5.128571429,6.885714286,7.971428571
+1,Vikings,MIN,DST,2300,Vikings  (15608300),4.371428571,5.328571429,6.842857143
