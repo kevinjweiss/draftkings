@@ -138,7 +138,7 @@ class Big_Matrix():
             if position == 'qb':
                 thresh = 15
             if position == 'wr':
-                thresh = 10
+                thresh = 8
             if position == 'rb':
                 thresh - 8
             if position == 'rb' or position == 'te' or position == 'dst':
