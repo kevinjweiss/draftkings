@@ -11,11 +11,11 @@ from post_process import Post_Process
 
 # Year and Week For Data Organization
 year = 2020
-weeks = [9]
+weeks = [10]
 
 for week in weeks:
     # Draft Kings Lineups -- Create Lineups -- Pick Slate -- End of URL
-    group_id = 41096
+    group_id = 41097
     
     # Scoring Systems - Need to be setup by name in scoring_dict.py
     scoring = ['Draft Kings', 'Dynasty', 'Redraft']
