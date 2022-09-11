@@ -28,12 +28,12 @@ class Big_Matrix():
         if not os.path.exists(self.path):
             os.mkdir(self.path)
            
-    def fp_scrape(self):
+    def fp_scrape_proj(self):
         
         # Setup some parameters to scrape
         base_url = 'http://www.fantasypros.com/nfl/projections'
         week = self.week
-        
+        year = self.year
         fp_df = []
         for position in self.positions:
         
@@ -42,12 +42,19 @@ class Big_Matrix():
                 'max-yes': 'true',
                 'min-yes': 'true',
                 'scoring': 'STD',
-                'week': week
+                'week': week,
+                'year': year,
             }
             text = requests.get(url, params=params).text
             
             if position != 'dst':
-                df = pd.io.html.read_html(text,attrs={'id': 'data'}, header=1)[0]
+                if position == 'k':
+                    header = 0
+                else:
+                    header = 1
+                df = pd.io.html.read_html(text,attrs={'id': 'data'}, header=header)[0]
+                
+                df = df[df['Player'] != 'highlow'].reset_index(drop=True)
                 df['Team'] = df['Player'].apply(lambda x: x.split()[-2])
                 df['Player'] = df['Player'].apply(lambda x: ' '.join(x.split()[0:2]))
                 df['Player'] = df['Player'].str.replace('.', '')
@@ -57,7 +64,7 @@ class Big_Matrix():
                 df['Player'] = df['Player'].apply(lambda x: ' '.join(x.split()[-1:]))
             
             for column in df.columns.values:
-                if column != 'Player' and column !='Team':
+                if column != 'Player' and column !='Team' and column!='POS':
                     for i in range(0, len(df[column])):
                         string1 = df.loc[i, column]
                         dec1 = string1.find('.')
@@ -73,62 +80,154 @@ class Big_Matrix():
                     df = df.drop(column, axis=1)
                     
             df['Week'] = week
+            df['Year'] = year
             df['Position'] = position.upper()
             
-            path_1 = os.path.join(self.path, 'FantasyPros_Fantasy_Football_Projections_' + position.upper() + '_Week' + str(self.week) + '.csv')
+            path_1 = os.path.join(self.path, 'FantasyPros_Fantasy_Football_Projections_' + position.upper() + '_Week' + '_' + str(self.year) + '.csv')
             
             df.to_csv(path_1)
             fp_df.append(df)
             
-            self.fp_df = fp_df
+            self.fp_df_proj = fp_df
         
-        return fp_df
+        return self.fp_df_proj
+    
+    def fp_scrape_stats(self):
         
-    def score(self, scoring):
+        # Setup some parameters to scrape
+        base_url = 'http://www.fantasypros.com/nfl/stats'
+        week = self.week
+        year = self.year
+        fp_df = []
+        for position in self.positions:
+        
+            url = '%s/%s.php' % (base_url, position)
+            params = {
+                'range': 'week',
+                'week': week,
+                'year': year,
+            }
+            text = requests.get(url, params=params).text
+            
+            if position != 'dst':
+                if position == 'k':
+                    header = 0
+                else:
+                    header = 1
+                df = pd.io.html.read_html(text,attrs={'id': 'data'}, header=header)[0]
+                
+                df['Team'] = df['Player'].apply(lambda x: x.split()[-1])
+                df['Team'] = df['Team'].apply(lambda x: x[1:-1])
+                df['Player'] = df['Player'].apply(lambda x: ' '.join(x.split()[0:2]))
+                df['Player'] = df['Player'].str.replace('.', '')
+            else:
+                df = pd.io.html.read_html(text,attrs={'id': 'data'})[0]
+                df['Player'] = df['Player'].apply(lambda x: ' '.join(x.split()[:-1]))
+                df['Player'] = df['Player'].apply(lambda x: ' '.join(x.split()[-1:]))
+                              
+            df['Week'] = week
+            df['Year'] = year
+            df['Position'] = position.upper()
+            
+            path_1 = os.path.join(self.path, 'FantasyPros_Fantasy_Football_Stats_' + position.upper() + '_Week' + str(self.week) + '_' + str(self.year) + '.csv')
+            
+            df.to_csv(path_1)
+            fp_df.append(df)
+            
+            self.fp_df_stats = fp_df
+        
+        return self.fp_df_stats
+        
+    def score_proj(self, scoring):
         
         # Define Scoring System
         pt_dict = create_dict(scoring)
         
         # Setup Min/Mid/Max list to loop through
-        list = ['_MIN', '_MID', '_MAX']
+        sfxs= ['_MIN', '_MID', '_MAX']
         
         # Setup Blank List of Frames
         frames = []
         
         # Loop Through Positions
-        for i, df in enumerate(self.fp_df):
+        for i, df in enumerate(self.fp_df_proj):
             
             # Loop Through Min/Mid/Max Projections
-            for sfx in list:
+            for sfx in sfxs:
                 
                 if i == 0:
-                    # QB: Calculate Draft King Points based on Projected Stats
+                    # QB: Calculate Points based on Projected Stats
                     bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['PASSBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['PASSTHRESH'])) - pt_dict['PASSBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['PASSBONUS']).clip(0, pt_dict['PASSBONUS'])
                     df[scoring + sfx] = df.loc[:,'TDS' + sfx]*pt_dict['PASSTD'] + df.loc[:,'YDS' + sfx]*pt_dict['PASSYD'] + df.loc[:,'INTS' + sfx]*pt_dict['INT'] + df.loc[:,'YDS.1' + sfx]*pt_dict['RUSHYD'] + df.loc[:,'TDS.1' + sfx]*pt_dict['RUSHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + bonus
             
                 if i == 1:
-                    # RB: Calculate Draft King Points based on Projected Stats
+                    # RB: Calculate Points based on Projected Stats
                     bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['RUSHBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['RUSHTHRESH'])) - pt_dict['RUSHBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['RUSHBONUS']).clip(0, pt_dict['RUSHBONUS'])
                     df[scoring + sfx] = df.loc[:,'YDS' + sfx]*pt_dict['RUSHYD'] + df.loc[:,'TDS' + sfx]*pt_dict['RUSHTD'] + df.loc[:,'REC' + sfx]*pt_dict['REC'] + df.loc[:,'YDS.1' + sfx]*pt_dict['CATCHYD'] + df.loc[:,'TDS.1' + sfx]*pt_dict['CATCHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + bonus
                 
-                if i == 2 or i ==3:
-                    # WR & TE: Calculate Draft King Points based on Projected Stats
+                if i == 2 or i == 3:
+                    # WR & TE: Calculate Points based on Projected Stats
                     bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['RECBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['RECTHRESH'])) - pt_dict['RECBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['RECBONUS']).clip(0, pt_dict['RECBONUS'])
                     df[scoring + sfx] = df.loc[:,'REC' + sfx]*pt_dict['REC'] + df.loc[:,'YDS' + sfx]*pt_dict['CATCHYD'] + df.loc[:,'TDS' + sfx]*pt_dict['CATCHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + bonus
-            
+                
                 if i == 4:
-                    # DST: Calculate Draft King Points based on Projected Stats
+                    # Kicker: Calculate Points based on Projected Stats
+                    df.to_csv('Test.csv')
+                    df[scoring + sfx] = df.loc[:, 'FG' + sfx]*pt_dict['FG'] + df.loc[:, 'XPT' + sfx]*pt_dict['XPT']
+                    
+                if i == 5:
+                    # DST: Calculate Points based on Projected Stats
                     points_func = interp1d(pt_dict['POINTS_AGAINST'], pt_dict['FANTASY_POINTS'], fill_value='extrapolate')
                     yards_func = interp1d(pt_dict['YARDS_AGAINST'], pt_dict['FANTASY_POINTS_2'], fill_value='extrapolate')
-                    dst_bonus = points_func(df.loc[:, 'PA' + sfx])
+                    dst_bonus = points_func(df.loc[:, 'PA' + sfx]/17)
                     dst_bonus_2 = yards_func(df.loc[:, 'YDS AGN' + sfx])
                     df[scoring + sfx] = df.loc[:,'SACK' + sfx]*pt_dict['SACK'] + df.loc[:,'INT' + sfx]*pt_dict['DEFINT'] + df.loc[:,'FR' + sfx]*pt_dict['FR'] + df.loc[:,'TD' + sfx]*pt_dict['DEFTD'] + df.loc[:,'SAFETY' + sfx]*pt_dict['SAFETY'] + dst_bonus + dst_bonus_2
             
             frames.append(df)
 
-        self.fp_df = frames
+        self.fp_df_proj = frames
         
-        return self.fp_df
+        return self.fp_df_proj
+    
+    def score_stats(self, scoring):
+        
+        # Define Scoring System
+        pt_dict = create_dict(scoring)
+                
+        # Setup Blank List of Frames
+        frames = []
+        
+        # Loop Through Positions
+        for i, df in enumerate(self.fp_df_stats):
+            sfx = ''
+            
+            if i == 0:
+                # QB: Calculate Points based on Projected Stats
+                bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['PASSBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['PASSTHRESH'])) - pt_dict['PASSBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['PASSBONUS']).clip(0, pt_dict['PASSBONUS'])
+                df[scoring + sfx] = df.loc[:,'TD' + sfx]*pt_dict['PASSTD'] + df.loc[:,'YDS' + sfx]*pt_dict['PASSYD'] + df.loc[:,'INT' + sfx]*pt_dict['INT'] + df.loc[:,'YDS.1' + sfx]*pt_dict['RUSHYD'] + df.loc[:,'TD.1' + sfx]*pt_dict['RUSHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + bonus
+        
+            if i == 1:
+                # RB: Calculate Points based on Projected Stats
+                bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['RUSHBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['RUSHTHRESH'])) - pt_dict['RUSHBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['RUSHBONUS']).clip(0, pt_dict['RUSHBONUS'])
+                df[scoring + sfx] = df.loc[:,'YDS' + sfx]*pt_dict['RUSHYD'] + df.loc[:,'TD' + sfx]*pt_dict['RUSHTD'] + df.loc[:,'REC' + sfx]*pt_dict['REC'] + df.loc[:,'YDS.1' + sfx]*pt_dict['CATCHYD'] + df.loc[:,'TD.1' + sfx]*pt_dict['CATCHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + bonus
+            
+            if i == 2 or i == 3:
+                # WR & TE: Calculate Points based on Projected Stats
+                bonus = (df.loc[:,'YDS' + sfx]*(pt_dict['RECBONUS']/((1-pt_dict['BONUS_RAMP'])*pt_dict['RECTHRESH'])) - pt_dict['RECBONUS']/(1-pt_dict['BONUS_RAMP']) + pt_dict['RECBONUS']).clip(0, pt_dict['RECBONUS'])
+                df[scoring + sfx] = df.loc[:,'REC' + sfx]*pt_dict['REC'] + df.loc[:,'YDS' + sfx]*pt_dict['CATCHYD'] + df.loc[:,'TD' + sfx]*pt_dict['CATCHTD'] + df.loc[:,'FL' + sfx]*pt_dict['FL'] + df.loc[:,'YDS.1' + sfx]*pt_dict['RUSHYD'] + df.loc[:,'TD.1' + sfx]*pt_dict['RUSHTD'] + bonus
+            
+            if i == 4:
+                # Kicker: Calculate Points based on Projected Stats
+                df[scoring + sfx] = df.loc[:, 'FG' + sfx]*pt_dict['FG'] + df.loc[:, 'XPT' + sfx]*pt_dict['XPT']
+            if i == 5:
+                # DST: Calculate Points based on Projected Stats
+                df[scoring + sfx] = df.loc[:, 'FPTS']
+            
+            frames.append(df)
+
+        self.fp_df_stats = frames
+        
+        return self.fp_df_stats
       
     def plot_ranking(self, df_in, list, ascending):
         
@@ -136,12 +235,17 @@ class Big_Matrix():
         for i, position in enumerate(self.positions):
             
             if position == 'qb':
-                thresh = 15
-            if position == 'wr':
-                thresh = 6
-            if position == 'rb' or position == 'te' or position == 'dst':
                 thresh = 5
-            
+            if position == 'wr':
+                thresh = 8
+            if position == 'rb':
+                thresh = 5
+            if position == 'te':
+                thresh = 5
+            if position == 'k':
+                thresh = 5
+            if position == 'dst':
+                thresh = 5
             # Loop through Scoring Systems
             for item in list:
                 with plt.style.context('ggplot'):
@@ -149,7 +253,6 @@ class Big_Matrix():
                 plt.title(position.upper())
                 df = df_in[i].sort_values(item + '_MID', ascending=ascending)
                 df = df[df[item + '_MID'] > thresh].reset_index()
-                
                 rank, tier = rank_tier(8, item + '_MID', df, ascending)
                 cmap = cm.get_cmap("plasma")
                 colors = [cmap(k/8) for k in tier]
