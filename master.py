@@ -11,7 +11,7 @@ from post_process import Post_Process
 
 # Year and Week For Data Organization
 years = [2022]
-weeks = ['1']
+weeks = ['4']
 
 for year in years:
     for week in weeks:
